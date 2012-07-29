@@ -1,7 +1,22 @@
 require './util'
 
 class Building
+<<<<<<< HEAD
   constructor: (@name, @sight, @influence, @production) ->
+=======
+  constructor: (@x, @y, @sight, @influence, @production) ->
+    @forces = []
+  
+  enter: (playerIndex, force) ->
+    @forces[playerIndex] += force
+  
+  getX: () ->
+    return @x
+    
+  getY: () ->
+    return @y
+
+>>>>>>> 4b33e389a2a4d3485fce9ec1d4e37f02b695d6cd
   str: () ->
     'o'
     
@@ -18,8 +33,23 @@ class Tile
       @building.str()
 
     
-class Soldier
-  constructor: (@x, @y, @building) ->
+class Army
+  MOVE_SPEED: 1
+  
+  constructor: (@playerIndex, @force, @source, @destination) ->
+    @elapsedTime = 0
+    @necessaryTime =
+      Math.sqrt( Math.pow(destination.getX() - source.getX())
+      + Math.pow(destination.getY() - source.getY()) )
+    
+  move: () ->
+    elapsedTime++
+    if elapsedTime >= necessaryTime
+      @destination.enter(@playerIndex, @force)
+      return false
+    else
+      return true
+
 
 class Map
   constructor: (@width, @height) ->
@@ -74,6 +104,7 @@ class Deck
 
   
 class Player
+
   constructor: () ->
     @hand = new Hand()
     @deck = new Deck()
