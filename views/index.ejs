@@ -4,6 +4,17 @@
 <% copyright = "Copyright(C) 2012. Almond Choco Project(仮)" %>
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+  var socket = io.connect('http://electric-rain-8443.herokuapp.com/');
+  socket.on('news', function (data) {
+    alert(data);
+    console.log(data);
+    socket.emit('my other event', { my: 'data' });
+  });
+</script>
+
 <script type="text/javascript">
     $(document).ready(function() {
         $("#submit").click(function() {
