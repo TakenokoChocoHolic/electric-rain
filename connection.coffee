@@ -1,5 +1,5 @@
-exports.start = () ->
-  io = require('socket.io').listen(80)
+exports.start = (app) ->
+  io = require('socket.io').listen(app)
 
   io.sockets.on 'connection', (socket) ->
     socket.emit('news', { hello: 'world' })

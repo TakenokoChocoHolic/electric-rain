@@ -5,9 +5,9 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
-  var socket = io.connect('http://electric-rain-8443.herokuapp.com/');
+  var socket = io.connect('<%= url %>');
   socket.on('news', function (data) {
-    alert(data);
+    alert(data.hello);
     console.log(data);
     socket.emit('my other event', { my: 'data' });
   });
