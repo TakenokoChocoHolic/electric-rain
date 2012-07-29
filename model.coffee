@@ -1,3 +1,5 @@
+util = require './util'
+
 class Building
   constructor: (@x, @y, @sight, @influence, @production) ->
     @forces = []
@@ -10,13 +12,21 @@ class Building
     
   getY: () ->
     return @y
+
+  str: () ->
+    'o'
     
     
 class Tile
-  @building: null
-  
+  constructor: (@building) ->
   build: (building) ->
     @building = building
+
+  str: () ->
+    if (@building == null)
+      '.'
+    else
+      @building.str()
 
     
 class Army
@@ -36,17 +46,25 @@ class Army
     else
       return true
 
+
 class Map
-  @tiles: []
-  
   constructor: (@width, @height) ->
-    for x in [0 .. width-1]
-      @tiles.add([])
-      for y in [0 .. height-1]
-        @tiles[x].add(new Tile())
+    @tiles = []
+    for x in [0 .. @width-1]
+      @tiles.push([])
+      for y in [0 .. @height-1]
+        @tiles[x].push(new Tile(null))
   
   build: (x, y, building) ->
-    tiles[x][y].build(building)
+    @tiles[x][y].build(building)
+
+  str: () ->
+    ret = ''
+    for x in [0 .. @width - 1]
+      for y in [0 .. @height - 1]
+        ret += @tiles[x][y].str()
+      ret += '\n'
+    ret
     
       
 class Card
@@ -54,28 +72,33 @@ class Card
   
   
 class Hand
-  @cards: []
-
-  
-class Deck
-  @cards: []
-  
   constructor: () ->
+    @cards = []
+
+class Deck
+  constructor: () ->
+    @cards = []
+  shuffle: ->
+    util.shuffle @cards
 
   
 class Player
-  @hand: new Hand()
-  @deck: new Deck()
-  @armies: []
+
+  constructor: () ->
+    @hand = new Hand()
+    @deck = new Deck()
+    @soldiers = []
 
   
 class Game
-  @players: []
-  @map: new Map()
-  
   constructor: () ->
+    @players = []
+    @map = new Map(5, 5)
     for i in [0 .. 4]
-      players.add(new Player())
+      @players.push(new Player())
+
+  getMapStr: () ->
+    @map.str()
 
   
 exports.Game = Game

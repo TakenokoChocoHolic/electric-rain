@@ -1,10 +1,13 @@
-class Engine
-  @users: []
+Game = require('./model').Game
 
+class Engine
   constructor: () ->
+    @usesrs = []
+    @game = new Game()
+  update: () ->
   getStatus: () ->
     {
-      map: '....\n....\n....\n..o.\n',
+      map: @game.getMapStr(),
       cards: [ {kind: 1} ]
     }
   mv: (data) -> true
@@ -14,9 +17,5 @@ class Engine
   loginUser: (user) ->
     # TODO
 
-class User
-  @logined: false
-
-  constructor: (@socket) ->
-
 exports.Engine = Engine
+

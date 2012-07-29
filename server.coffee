@@ -16,3 +16,7 @@ app.listen port, ->
 engine = new Engine()
 
 connection.start app, engine
+
+setInterval ->
+  engine.update()
+, 1000
