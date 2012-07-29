@@ -11,6 +11,8 @@ class Engine
   build: (data) -> true
   addUser: (user) ->
     @users.add(user)
+  loginUser: (user) ->
+    # TODO
 
 class User
   @logined: false
