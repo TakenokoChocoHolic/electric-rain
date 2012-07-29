@@ -1,10 +1,13 @@
+Game = require('./model').Game
+
 class Engine
   @users: []
+  @game: new Game()
 
   constructor: () ->
   getStatus: () ->
     {
-      map: '....\n....\n....\n..o.\n',
+      map: game.getMapStr(),
       cards: [ {kind: 1} ]
     }
   mv: (data) -> true

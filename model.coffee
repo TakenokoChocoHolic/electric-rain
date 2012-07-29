@@ -8,10 +8,16 @@ class Tile
   build: (building) ->
     @building = building
 
+  str: () ->
+    if (@building == null)
+      '.'
+    else
+      building.str()
+
     
 class Soldier
   constructor: (@x, @y, @building) ->
-    
+
 class Map
   @tiles: []
   
@@ -23,6 +29,14 @@ class Map
   
   build: (x, y, building) ->
     tiles[x][y].build(building)
+
+  str: () ->
+    ret = ''
+    for x in [0 .. width - 1]
+      for y in [0 .. height - 1]
+        ret += @tiles[x][y].str()
+      ret += '\n'
+    ret
     
       
 class Card
@@ -47,11 +61,14 @@ class Player
   
 class Game
   @players: []
-  @map: new Map()
+  @map: new Map(5, 5)
   
   constructor: () ->
     for i in [0 .. 4]
       players.add(new Player())
+
+  getMapStr() ->
+    map.str()
 
   
 exports.Game = Game
