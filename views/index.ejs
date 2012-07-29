@@ -7,7 +7,6 @@
 
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 <script type="text/javascript">
-    var socket = io.connect('<%= url %>');
     socket.on('news', function (data) {
         alert(data.hello);
         console.log(data);
@@ -16,9 +15,21 @@
 </script>
 
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(function() {
+        var socket = io.connect('<%= url %>');
+        // receiver
+        socket.on('ls', function (data) {
+            $("#output").text(data.map);
+        }
+        // sender
         $("#submit").click(function() {
-            $("#output").text($("#input").val());
+            cmdText = $("#input").val();
+            if (cmdText.length > 0) {
+                args = cmdText.split(" ");
+                cmd = args.shift();
+                socket.emit(cmd, { args: args });
+            }
+            $("#input").text("");
         });
     });
 </script>
