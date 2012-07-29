@@ -2,6 +2,7 @@ class Engine
   @users: []
 
   constructor: () ->
+  update: () ->
   getStatus: () ->
     {
       map: '....\n....\n....\n..o.\n',
