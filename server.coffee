@@ -1,6 +1,7 @@
 express    = require 'express'
 controller = require './controller'
 connection = require './connection'
+Engine = require('./engine').Engine
 
 app = express.createServer(express.logger())
 app.configure ->
@@ -12,4 +13,6 @@ port = process.env.PORT or 3000
 app.listen port, ->
   console.log "Listening on #{port}\nPress CTRL-C to stop server."
 
-connection.start app
+engine = new Engine()
+
+connection.start app, engine
