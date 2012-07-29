@@ -1,3 +1,5 @@
+util = require './util'
+
 class Building
   constructor: (@sight, @influence, @production) ->
     
@@ -32,11 +34,12 @@ class Card
 class Hand
   @cards: []
 
-  
 class Deck
   @cards: []
   
   constructor: () ->
+  shuffle: ->
+    util.shuffle @cards
 
   
 class Player
