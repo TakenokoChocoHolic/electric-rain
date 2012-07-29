@@ -5,8 +5,6 @@ class Building
     
     
 class Tile
-  @building: null
-  
   build: (building) ->
     @building = building
 
@@ -21,16 +19,15 @@ class Soldier
   constructor: (@x, @y, @building) ->
 
 class Map
-  @tiles: []
-  
   constructor: (@width, @height) ->
+    @tiles = []
     for x in [0 .. width-1]
       @tiles.add([])
       for y in [0 .. height-1]
         @tiles[x].add(new Tile())
   
   build: (x, y, building) ->
-    tiles[x][y].build(building)
+    @tiles[x][y].build(building)
 
   str: () ->
     ret = ''
@@ -46,32 +43,32 @@ class Card
   
   
 class Hand
-  @cards: []
+  constructor: () ->
+    @cards = []
 
 class Deck
-  @cards: []
-  
   constructor: () ->
+    @cards = []
   shuffle: ->
     util.shuffle @cards
 
   
 class Player
-  @hand: new Hand()
-  @deck: new Deck()
-  @soldiers: []
+  constructor: () ->
+    @hand = new Hand()
+    @deck = new Deck()
+    @soldiers = []
 
   
 class Game
-  @players: []
-  @map: new Map(5, 5)
-  
   constructor: () ->
+    @players = []
+    @map = new Map(5, 5)
     for i in [0 .. 4]
-      players.add(new Player())
+      @players.add(new Player())
 
-  getMapStr() ->
-    map.str()
+  getMapStr: () ->
+    @map.str()
 
   
 exports.Game = Game
