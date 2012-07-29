@@ -5,6 +5,7 @@ class Engine
   @game: new Game()
 
   constructor: () ->
+  update: () ->
   getStatus: () ->
     {
       map: game.getMapStr(),
