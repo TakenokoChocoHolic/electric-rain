@@ -1,10 +1,7 @@
 require './util'
 
 class Building
-<<<<<<< HEAD
-  constructor: (@name, @sight, @influence, @production) ->
-=======
-  constructor: (@x, @y, @sight, @influence, @production) ->
+  constructor: (@name, @x, @y, @sight, @influence, @production) ->
     @forces = []
   
   enter: (playerIndex, force) ->
@@ -16,7 +13,6 @@ class Building
   getY: () ->
     return @y
 
->>>>>>> 4b33e389a2a4d3485fce9ec1d4e37f02b695d6cd
   str: () ->
     'o'
     

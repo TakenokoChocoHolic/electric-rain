@@ -1,4 +1,4 @@
-Game = require('./model').Game
+Game = require('./game').Game
 
 class Engine
   constructor: () ->
