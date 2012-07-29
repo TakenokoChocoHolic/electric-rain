@@ -10,6 +10,7 @@ exports.start = (app) ->
       console.log(data.my)
     socket.on 'ls', (data) ->
       console.log(data)
+      socket.emit('ls', { map: '....\n....\n....\n....\n' })
     socket.on 'mv', (data) ->
       console.log(data)
     socket.on 'buid', (data) ->
