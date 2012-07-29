@@ -3,6 +3,21 @@
 <% first_message = "ask your matter!" %>
 <% copyright = "Copyright(C) 2012. Almond Choco Project(仮)" %>
 
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#submit").click(function() {
+            $("#output").text($("#input").val());
+        });
+    });
+</script>
+
 <h2><%= msg %></h2>
+
+<p><textarea id="output" rows="10" cols="40">output</textarea></p>
+<p><textarea id="input" rows="1" cols="40">input</textarea></p>
+<p><button id="submit" type="button">Submit</button></p>
+
+
 
 <%= copyright %>
