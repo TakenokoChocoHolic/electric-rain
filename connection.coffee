@@ -20,7 +20,7 @@ exports.start = (app, engine) ->
 
     socket.on 'ls', (data) ->
       console.log(data)
-      socket.emit('ls', { map: '....\n....\n....\n....\n' })
+      socket.emit('ls', { map: engine.getStatus().map })
 
     socket.on 'mv', (data) ->
       console.log(data)
