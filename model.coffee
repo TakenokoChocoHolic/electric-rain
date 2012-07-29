@@ -2,9 +2,12 @@ util = require './util'
 
 class Building
   constructor: (@sight, @influence, @production) ->
+  str: () ->
+    'o'
     
     
 class Tile
+  constructor: (@building) ->
   build: (building) ->
     @building = building
 
@@ -12,7 +15,7 @@ class Tile
     if (@building == null)
       '.'
     else
-      building.str()
+      @building.str()
 
     
 class Soldier
@@ -21,18 +24,18 @@ class Soldier
 class Map
   constructor: (@width, @height) ->
     @tiles = []
-    for x in [0 .. width-1]
-      @tiles.add([])
-      for y in [0 .. height-1]
-        @tiles[x].add(new Tile())
+    for x in [0 .. @width-1]
+      @tiles.push([])
+      for y in [0 .. @height-1]
+        @tiles[x].push(new Tile(null))
   
   build: (x, y, building) ->
     @tiles[x][y].build(building)
 
   str: () ->
     ret = ''
-    for x in [0 .. width - 1]
-      for y in [0 .. height - 1]
+    for x in [0 .. @width - 1]
+      for y in [0 .. @height - 1]
         ret += @tiles[x][y].str()
       ret += '\n'
     ret
@@ -65,7 +68,7 @@ class Game
     @players = []
     @map = new Map(5, 5)
     for i in [0 .. 4]
-      @players.add(new Player())
+      @players.push(new Player())
 
   getMapStr: () ->
     @map.str()

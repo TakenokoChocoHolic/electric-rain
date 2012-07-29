@@ -21,5 +21,4 @@ describe 'map', ->
   Game = require('../model').Game
   describe '#constructor()', ->
     it 'should ', ->
-      map = new Game()
-      assert.equal(true, true)
+      game = new Game()
