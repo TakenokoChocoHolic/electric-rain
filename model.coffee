@@ -1,12 +1,12 @@
 class Game
   @players: []
-  @map: Map
+  @map: new Map
   constructor: () ->
     for i in [0 .. 4]
       players.add(Player)
   
 class Player
-  @hand: Hand
+  @hand: new Hand
   @soldiers: []
   
 class Hand
@@ -24,7 +24,7 @@ class Map
     for x in [0 .. width-1]
       @tiles.add([])
       for y in [0 .. height-1]
-        @tiles[x].add(Tile)
+        @tiles[x].add(new Tile)
   
 class Tile
   @building: null
