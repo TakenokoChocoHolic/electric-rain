@@ -11,6 +11,6 @@ describe 'util', ->
 describe 'map', ->
   describe '#constructor()', ->
     it 'should ', ->
-      #map = new Game()
+      game = new Game()
       assert.equal(true, true)
 

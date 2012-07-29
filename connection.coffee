@@ -13,9 +13,12 @@ exports.start = (app, engine) ->
       console.log(data.my)
 
     socket.on 'login', (data) ->
+      console.log(data)
       user.setName(data.args[0])
 
     socket.on 'getname', (data) ->
+      console.log('getname')
+      console.log(data)
       socket.emit('ls', { map: user.getNmae() })
 
     socket.on 'ls', (data) ->
