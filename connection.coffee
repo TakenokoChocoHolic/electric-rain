@@ -12,3 +12,5 @@ exports.start = (app) ->
       console.log(data)
     socket.on 'mv', (data) ->
       console.log(data)
+    socket.on 'buid', (data) ->
+      console.log(data)
