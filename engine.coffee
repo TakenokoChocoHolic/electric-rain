@@ -14,9 +14,5 @@ class Engine
   loginUser: (user) ->
     # TODO
 
-class User
-  @logined: false
-
-  constructor: (@socket) ->
-
 exports.Engine = Engine
+
