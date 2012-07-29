@@ -1,21 +1,27 @@
 Game = require('./game').Game
 
 class Engine
-  constructor: () ->
+  constructor: ->
+    console.log "new Engine()"
     @usesrs = []
     @game = new Game()
-  update: () ->
-  getStatus: () ->
+
+  update: ->
+
+  getStatus: ->
     {
       map: @game.getMapStr(),
       cards: [ {kind: 1} ]
     }
+
   mv: (data) -> true
+
   build: (data) -> true
+
   addUser: (user) ->
     @users.add(user)
+
   loginUser: (user) ->
     # TODO
 
 exports.Engine = Engine
-

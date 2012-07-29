@@ -18,7 +18,7 @@ describe 'util', ->
       assert.equal(2, obj.clone().value)
 
 describe 'map', ->
-  Game = require('../model').Game
+  Game = require('../game').Game
   describe '#constructor()', ->
     it 'should ', ->
       game = new Game()

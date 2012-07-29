@@ -22,7 +22,7 @@ clone = (obj) ->
   if obj instanceof Array
     copy = []
     for o in obj
-      copy.push(o)
+      copy.push(clone(o))
     return copy
 
   # Handle Object
@@ -35,5 +35,5 @@ clone = (obj) ->
 
   throw new Error("Unable to copy obj! Its type isn't supported.")
 
-Array::shuffle = () -> shuffle(this)
-Object::clone = () -> clone(this)
+exports.shuffle = shuffle
+exports.clone = clone

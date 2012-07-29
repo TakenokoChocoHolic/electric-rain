@@ -7,28 +7,29 @@ class Building
   enter: (playerIndex, force) ->
     @forces[playerIndex] += force
   
-  getX: () ->
-    return @x
+  getX: ->
+    @x
     
-  getY: () ->
-    return @y
+  getY: ->
+    @y
 
-  str: () ->
+  str: ->
     'o'
-    
-    
+
+
 class Tile
   constructor: (@building) ->
+
   build: (building) ->
     @building = building
 
-  str: () ->
-    if (@building == null)
+  str: ->
+    if @building == null
       '.'
     else
       @building.str()
 
-    
+
 class Army
   MOVE_SPEED: 1
   
@@ -38,13 +39,13 @@ class Army
       Math.sqrt( Math.pow(destination.getX() - source.getX())
       + Math.pow(destination.getY() - source.getY()) )
     
-  move: () ->
+  move: ->
     elapsedTime++
     if elapsedTime >= necessaryTime
       @destination.enter(@playerIndex, @force)
-      return false
+      false
     else
-      return true
+      true
 
 
 class Map
@@ -58,7 +59,7 @@ class Map
   build: (x, y, building) ->
     @tiles[x][y].build(building)
 
-  str: () ->
+  str: ->
     ret = ''
     for x in [0 .. @width - 1]
       for y in [0 .. @height - 1]
@@ -76,9 +77,9 @@ class BuildingCard
 
 
 all_buildings = [
-      new Building("$BEc(B", 10, 1, 1)
-    , new Building("$B652q(B", 1, 10, 1)
-    , new Building("$B:V(B", 1, 1, 10)
+      new Building("塔", 10, 1, 1)
+    , new Building("教会", 1, 10, 1)
+    , new Building("砦", 1, 1, 10)
   ]
 
 all_cards = [
@@ -87,28 +88,30 @@ all_cards = [
     , new BuildingCard 10, all_buildings[2]
   ]
 
+
 class Hand
-  constructor: () ->
+  constructor: ->
     @cards = []
 
+
 class Deck
-  constructor: () ->
+  constructor: ->
     @cards = []
 
   shuffle: ->
-    @cards.shuffle()
+    util.shuffle @cards
 
-  
+
 class Player
-
-  constructor: () ->
+  constructor: ->
     @hand = new Hand()
     @deck = new Deck()
     @soldiers = []
 
-  
+
 class Game
-  constructor: () ->
+  constructor: ->
+    console.log "new Game()"
     @players = []
     @map = new Map(5, 5)
     for i in [0 .. 4]
@@ -117,5 +120,5 @@ class Game
   getMapStr: () ->
     @map.str()
 
-  
+
 exports.Game = Game
