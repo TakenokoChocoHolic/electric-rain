@@ -20,5 +20,5 @@ describe 'util', ->
 describe 'map', ->
   Game = require('../game').Game
   describe '#constructor()', ->
-    it 'should ', ->
+    it 'should create instance', ->
       game = new Game()
