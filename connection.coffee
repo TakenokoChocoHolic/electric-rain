@@ -1,11 +1,11 @@
 User = require('./user').User
 
-exports.start = (app, room) ->
+exports.start = (app, lobby) ->
   io = require('socket.io').listen(app)
+  room = null
 
   io.sockets.on 'connection', (socket) ->
     user = new User(socket)
-    room.addUser(user)
     socket.emit('news', { hello: 'world' })
 
     socket.on 'disconnect', () ->
@@ -16,7 +16,13 @@ exports.start = (app, room) ->
       console.log(data)
       console.log(data.my)
 
+    socket.on 'enter', (data) ->
+      console.log(data)
+      room = lobby.rooms[data.roomId]
+      room.addUser(user)
+
     socket.on 'login', (data) ->
+      return if not room
       console.log(data)
       isSuccess = room.loginUser(user, data.args[0])
       res = if isSuccess then 'logged in successfully' else 'already logged in'
@@ -28,10 +34,12 @@ exports.start = (app, room) ->
       socket.emit('ls', { map: user.getNmae() })
 
     socket.on 'ls', (data) ->
+      return if not room
       console.log(data)
       socket.emit('ls', { map: room.getStatus().map })
 
     socket.on 'users', (data) ->
+      return if not room
       console.log(data)
       names = (u.name for u in room.users).join "\n"
       socket.emit('ls', { map: names })
