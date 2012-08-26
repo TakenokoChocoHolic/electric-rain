@@ -1,8 +1,8 @@
 class User
-  constructor: (@socket) ->
+  constructor: (@socket, id) ->
     console.log "new User()"
     @logined = false
-    @id = 
+    @id = id
     @name = 'guest' + @id
 
   setName: (name) -> @name = name

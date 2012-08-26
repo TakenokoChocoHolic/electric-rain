@@ -1,10 +1,12 @@
 User = require('./user').User
 
+
 exports.start = (app, room) ->
   io = require('socket.io').listen(app)
 
+  userIdSeq = 0
   io.sockets.on 'connection', (socket) ->
-    user = new User(socket)
+    user = new User(socket, userIdSeq++)
     room.addUser(user)
     socket.emit('news', { hello: 'world' })
 
