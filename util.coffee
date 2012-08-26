@@ -10,7 +10,7 @@ shuffle = (array) ->
 
 clone = (obj) ->
   # Handle the 3 simple types, and null or undefined
-  return obj if null == obj or "object" != typeof obj
+  return obj if null == obj or 'object' != typeof obj
 
   # Handle Date
   if obj instanceof Date
@@ -28,12 +28,11 @@ clone = (obj) ->
   # Handle Object
   if obj instanceof Object
     copy = {}
-    for attr of obj
-      if obj.hasOwnProperty(attr)
-        copy[attr] = clone(obj[attr])
+    for key, val of obj
+      copy[key] = clone(obj[key])
     return copy
 
-  throw new Error("Unable to copy obj! Its type isn't supported.")
+  throw new Error('Unable to copy obj! Its type isn\'t supported.')
 
 exports.shuffle = shuffle
 exports.clone = clone

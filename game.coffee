@@ -68,27 +68,6 @@ class Map
     ret
 
 
-class Card
-  constructor: (@cost) ->
-
-
-class BuildingCard
-  constructor: (@cost, @building) ->
-
-
-all_buildings = [
-      new Building("塔", 10, 1, 1)
-    , new Building("教会", 1, 10, 1)
-    , new Building("砦", 1, 1, 10)
-  ]
-
-all_cards = [
-      new BuildingCard 10, all_buildings[0]
-    , new BuildingCard 10, all_buildings[1]
-    , new BuildingCard 10, all_buildings[2]
-  ]
-
-
 class Hand
   constructor: ->
     @cards = []
