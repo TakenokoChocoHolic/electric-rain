@@ -5,9 +5,11 @@ url = if process.env.PORT
 
 exports.start = (app, lobby) ->
   app.get '/', (req, res) ->
+    console.log('####################')
+    console.log(lobby)
     locals = {
       msg: 'hello',
       url: url,
-      rooms: r.name for r in lobby.rooms,
+      rooms: (r.name for r in lobby.rooms),
     }
     res.render('index.ejs', {locals: locals})

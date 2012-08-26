@@ -22,5 +22,5 @@ app.listen port, ->
 connection.start app, lobby
 
 setInterval ->
-  room.update()
+  lobby.update()
 , 1000
