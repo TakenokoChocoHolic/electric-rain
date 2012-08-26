@@ -1,4 +1,53 @@
-require './util'
+require '../util'
+
+HAND_COUNT = 3
+DRAW_SPEED = 10
+
+class Point
+  constructor: (@x,@y) ->
+
+  distance: (other) ->
+
+class Army
+  constructor: (@location, @to, @count) ->
+
+class Building
+  constructor: (@location, @army_count, @template) ->
+
+class Map
+  constructor: (@width, @height) ->
+    @map = []
+
+  setObject: (location, obj) ->
+    # NOTE override map
+    @map[location.y *  height + location.x] = obj
+
+  getObject: (obj)->
+    @map[location.y * height + location.x]
+  
+class Mine
+
+class Player
+  constructor: (@deck) ->
+    util.shuffle(@deck)
+    @hand      = []
+    @trash     = []
+    @buildings = []
+    @armies    = []
+    @mine_count = 0
+    @draw_count = DRAW_SPEED
+    for i in [0...HAND_COUNT]
+      draw()
+
+  draw: ->
+    @hand.push(@deck.shift())
+
+  advance: ->
+    @draw_count -= 1
+    if @draw_count == 0
+      draw()
+      @draw_count = DRAW_SPEED
+
 
 class Card
   constructor: (@cost) ->
