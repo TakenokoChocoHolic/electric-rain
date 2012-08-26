@@ -1,4 +1,4 @@
-require '../util'
+require './util'
 
 HAND_COUNT = 3
 DRAW_SPEED = 10

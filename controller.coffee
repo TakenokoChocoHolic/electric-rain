@@ -3,6 +3,11 @@ url = if process.env.PORT
   else
     "http://localhost"
 
-exports.start = (app) ->
+exports.start = (app, lobby) ->
   app.get '/', (req, res) ->
-    res.render('index.ejs', {locals:{msg:'hello', url:url}})
+    locals = {
+      msg: 'hello',
+      url: url,
+      rooms: r.name for r in lobby.rooms,
+    }
+    res.render('index.ejs', {locals: locals})
