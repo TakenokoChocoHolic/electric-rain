@@ -9,6 +9,9 @@ class Point
   distance: (other) ->
     Math.abs(other.x - @x) + Math.abs(other.y - @y)
 
+  equals: (other) ->
+    other.x == @x and other.y == @y
+
 class Army
   constructor: (@location, @to, @count) ->
 
@@ -83,6 +86,7 @@ allCards = {}
 for card in cards
   allCards[card.name] = card
 
+exports.Point = Point
 exports.Card = Card
 exports.BuildingCard = BuildingCard
 exports.AllBuildings = allBuildings
