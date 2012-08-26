@@ -6,6 +6,7 @@ class Point
   constructor: (@x,@y) ->
 
   distance: (other) ->
+		Math.abs(other.x - @x) + Math.abs(other.y - @y)
 
 class Army
   constructor: (@location, @to, @count) ->
@@ -47,13 +48,13 @@ class BuildingCard extends Card
     super @cost
 
 class BuildingTemplate
-  constructor: (@name, @territory_range, @sight_range, @mine_productivity, @army_productivity) ->
+  constructor: (@name, @sight_range, @territory_range, @mine_productivity, @army_productivity) ->
 
 buildings = [
-      new BuildingTemplate("塔", 10, 1, 1, 1)
-    , new BuildingTemplate("教会", 1, 10, 1, 1)
-    , new BuildingTemplate("兵舎", 1, 1, 10, 1)
-    , new BuildingTemplate("採掘場", 1, 1, 1, 10)
+      new BuildingTemplate("塔",    10,  1,  1,  1)
+    , new BuildingTemplate("教会",   1, 10,  1,  1)
+    , new BuildingTemplate("兵舎",   1,  1, 10,  1)
+    , new BuildingTemplate("採掘場", 1,  1,  1, 10)
   ]
 
 all_buildings = {}
