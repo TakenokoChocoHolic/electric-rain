@@ -1,9 +1,12 @@
+randomChar = require('./util').randomChar
+
 class User
-  constructor: (@socket, id) ->
+  constructor: (@socket) ->
     console.log "new User()"
     @logined = false
-    @id = id
-    @name = 'guest' + @id
+    @id = randomChar(8)
+    @name = 'guest#' + @id
+
 
   setName: (name) -> @name = name
 
