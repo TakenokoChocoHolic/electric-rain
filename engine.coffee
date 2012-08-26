@@ -3,7 +3,7 @@ Game = require('./game').Game
 class Engine
   constructor: ->
     console.log "new Engine()"
-    @usesrs = []
+    @users = []
     @game = new Game()
 
   update: ->
@@ -19,9 +19,21 @@ class Engine
   build: (data) -> true
 
   addUser: (user) ->
-    @users.add(user)
+    @users.push(user)
 
-  loginUser: (user) ->
-    # TODO
+  removeUser: (user) ->
+    for i in [0..@users.length]
+      if @users[i].id is user.id
+        @users.splice(i, 1)
+        break
+
+
+  loginUser: (user, name) ->
+    if user.logined
+      false
+    else
+      user.name = name
+      user.logined = true;
+      true
 
 exports.Engine = Engine
