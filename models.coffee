@@ -1,6 +1,7 @@
 require '../util'
 
 HAND_COUNT = 3
+DRAW_SPEED = 10
 
 class Point
   constructor: (@x,@y) ->
@@ -34,11 +35,20 @@ class Player
     @trash     = []
     @buildings = []
     @armies    = []
+    @mine_count = 0
+    @draw_count = DRAW_SPEED
     for i in [0...HAND_COUNT]
       draw()
 
   draw: ->
     @hand.push(@deck.shift())
+
+  advance: ->
+    @draw_count -= 1
+    if @draw_count == 0
+      draw()
+      @draw_count = DRAW_SPEED
+
 
 class Card
   constructor: (@cost) ->
