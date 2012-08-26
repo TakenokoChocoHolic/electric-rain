@@ -34,5 +34,12 @@ clone = (obj) ->
 
   throw new Error('Unable to copy obj! Its type isn\'t supported.')
 
+charList = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+randomChar = (len) ->
+  randInt = (max) ->
+    Math.floor(Math.random()*max)
+  (charList[randInt(charList.length)] for i in [1..len]).join('')
+
 exports.shuffle = shuffle
 exports.clone = clone
+exports.randomChar = randomChar

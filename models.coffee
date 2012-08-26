@@ -1,4 +1,4 @@
-require '../util'
+require './util'
 
 HAND_COUNT = 3
 DRAW_SPEED = 10
@@ -8,6 +8,10 @@ class Point
   constructor: (@x,@y) ->
 
   distance: (other) ->
+    Math.abs(other.x - @x) + Math.abs(other.y - @y)
+
+  equals: (other) ->
+    other.x == @x and other.y == @y
 
 class Army
   constructor: (@from, @to, @count) ->
@@ -58,7 +62,7 @@ class Army
               enemy.armies.splice(iArmy, 1)
 
 class Building
-  constructor: (@location, @army_count, @template) ->
+  constructor: (@location, @template, @army_count) ->
 
   advance: ->
     @army_count += @template.army_productivity
@@ -84,9 +88,9 @@ class Map
     # NOTE override map
     @map[location.y *  height + location.x] = obj
 
-  getObject: (obj)->
+  getObject: (location)->
     @map[location.y * height + location.x]
-  
+
 class Mine
 
 class Player
@@ -136,31 +140,34 @@ class BuildingCard extends Card
     super @cost
 
 class BuildingTemplate
-  constructor: (@name, @territory_range, @sight_range, @mine_productivity, @army_productivity) ->
+  constructor: (@name, @sight_range, @territory_range, @mine_productivity, @army_productivity) ->
 
 buildings = [
-      new BuildingTemplate("塔", 10, 1, 1, 1)
-    , new BuildingTemplate("教会", 1, 10, 1, 1)
-    , new BuildingTemplate("兵舎", 1, 1, 10, 1)
-    , new BuildingTemplate("採掘場", 1, 1, 1, 10)
+      new BuildingTemplate("本拠地", 10, 10, 10, 10)
+      new BuildingTemplate("塔",     10,  1,  1,  1)
+    , new BuildingTemplate("教会",    1, 10,  1,  1)
+    , new BuildingTemplate("兵舎",    1,  1, 10,  1)
+    , new BuildingTemplate("採掘場",  1,  1,  1, 10)
   ]
 
-all_buildings = {}
+allBuildings = {}
 for building in buildings
-  all_buildings[building.name] = building
+  allBuildings[building.name] = building
 
 cards = [
-      new BuildingCard(10, all_buildings["塔"])
-    , new BuildingCard(10, all_buildings["教会"])
-    , new BuildingCard(10, all_buildings["兵舎"])
-    , new BuildingCard(10, all_buildings["採掘場"])
+      new BuildingCard(10, allBuildings["塔"])
+    , new BuildingCard(10, allBuildings["教会"])
+    , new BuildingCard(10, allBuildings["兵舎"])
+    , new BuildingCard(10, allBuildings["採掘場"])
   ]
 
-all_cards = {}
+allCards = {}
 for card in cards
-  all_cards[card.name] = card
+  allCards[card.name] = card
 
+exports.Point = Point
 exports.Card = Card
 exports.BuildingCard = BuildingCard
-exports.all_buildings = all_buildings
-exports.all_cards = all_cards
+exports.AllBuildings = allBuildings
+exports.HomeTemplate = allBuildings[0]
+exports.AllCards = allCards

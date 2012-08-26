@@ -1,13 +1,8 @@
-require './models.coffee'
+models = require './models.coffee'
 
 class Game
-  constructor: ->
+  constructor: () ->
     console.log "new Game()"
-    @time = 1
-    @players = []
-    @map = new Map(5, 5)
-    for i in [0 .. 4]
-      @players.push(new Player())
 
   getMapStr: ->
     @map.str()
@@ -15,3 +10,16 @@ class Game
   advance: ->
     @time += 1
     @player.advance(this)
+
+  initalizeGame: () ->
+    @time = 1
+    @players = []
+    @map = new models.Map(100, 100)
+    for i in [0 .. 4]
+      pl = new models.Player([])
+      homeLoc = { x: (i%2 * 50), y: (i/2 % 2) * 50 }
+      home = new Building(homeLoc, models.HomeTemplate, 0)
+      pl.buildings.push home
+      @players.push(pl)
+    
+exports.Game = Game

@@ -1,7 +1,7 @@
 express    = require 'express'
 controller = require './controller'
 connection = require './connection'
-Engine = require('./engine').Engine
+Room = require('./room').Room
 
 # Initialize express
 app = express.createServer(express.logger())
@@ -15,12 +15,12 @@ port = process.env.PORT or 3000
 app.listen port, ->
   console.log "Listening on #{port}\nPress CTRL-C to stop server."
 
-# Initialize game engine
-engine = new Engine()
+# Initialize game room
+room = new Room()
 
 # Initialize connection with Socket.io
-connection.start app, engine
+connection.start app, room
 
 setInterval ->
-  engine.update()
+  room.update()
 , 1000
