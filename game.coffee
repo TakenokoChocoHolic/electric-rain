@@ -11,11 +11,11 @@ class Game
     @time += 1
     @player.advance(this)
 
-  initalizeGame: () ->
+  initalizeGame: ->
     @time = 1
     @players = []
     @map = new models.Map(100, 100)
-    for i in [0 .. 4]
+    for i in [0...4]
       pl = new models.Player([])
       homeLoc = { x: (i%2 * 50), y: (i/2 % 2) * 50 }
       home = new Building(homeLoc, models.HomeTemplate, 0)
