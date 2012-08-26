@@ -1,11 +1,12 @@
-idSeq = 0
+randomChar = require('./util').randomChar
 
 class User
   constructor: (@socket) ->
     console.log "new User()"
     @logined = false
-    @id = idSeq++
-    @name = 'guest' + @id
+    @id = randomChar(8)
+    @name = 'guest#' + @id
+
 
   setName: (name) -> @name = name
 

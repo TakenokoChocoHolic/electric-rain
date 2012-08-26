@@ -1,8 +1,8 @@
 Game = require('./game').Game
 
-class Engine
+class Room
   constructor: ->
-    console.log "new Engine()"
+    console.log "new Room()"
     @users = []
     @game = new Game()
 
@@ -36,4 +36,4 @@ class Engine
       user.logined = true;
       true
 
-exports.Engine = Engine
+exports.Room = Room
