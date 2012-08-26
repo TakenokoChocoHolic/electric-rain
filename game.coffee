@@ -14,4 +14,4 @@ class Game
 
   advance: ->
     @time += 1
-    @player.advance()
+    @player.advance(this)

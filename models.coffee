@@ -2,6 +2,7 @@ require '../util'
 
 HAND_COUNT = 3
 DRAW_SPEED = 10
+MOVE_SPEED = 1
 
 class Point
   constructor: (@x,@y) ->
@@ -9,10 +10,71 @@ class Point
   distance: (other) ->
 
 class Army
-  constructor: (@location, @to, @count) ->
+  constructor: (@from, @to, @count) ->
+    @location = @from.location
+
+  reach: (game, mine, index) ->
+    owner = @to.getOwner
+    if mine == owner
+      @to.army_count += @count
+    else if @to.army_count > @count
+      @to.army_count -= @count
+    else
+      index = owner.buildings.indexOf(@to)
+      owner.buildings.splice(index, 1)
+      @to.count = @count - @to.count
+      mine.builings.push(@to)
+    index = mine.armies.indexOf(this)
+    mine.armies.splice(index, 1)
+
+  advance: (game, mine, index) ->
+    all = @form.distance(@to)
+    now = @from.distance(@location)
+    dx = @to.location.x - @from.location.x
+    dx = ~~((now + 1) * dx / all) - ~~(now * dx / all)
+    dy = @to.location.y - @from.location.y
+    dy = ~~((now + 1) * dy / all) - ~~(now * dy / all)
+    @location.x += dx
+    @location.y += dy
+
+    if @to.location.equals(@location)
+      reach game, mine, index
+      return
+
+    for enemy in game.players
+      if enemy != mine
+        for iArmy in [0...enemy.armies.length]
+          army = enemy.armies[iArmy]
+          if @location.equals(army.location)
+            if @count <= army.count
+              if @count == army.count
+                enemy.armies.splice(iArmy, 1)
+              else
+                army.count -= @count
+              mine.armies.splice(index, 1)
+              return
+            else
+              @count -= army.count
+              enemy.armies.splice(iArmy, 1)
 
 class Building
   constructor: (@location, @army_count, @template) ->
+
+  advance: ->
+    @army_count += @template.army_productivity
+
+  isOwned: (player) ->
+    for building in player.buildings
+      if building == player
+        return true
+    return false
+
+  getOwner: (game) ->
+    for player in game.players
+      for building in player.buildings
+        if building == player
+          return player
+    throw new Error('Not found owner.')
 
 class Map
   constructor: (@width, @height) ->
@@ -34,7 +96,7 @@ class Player
     @trash     = []
     @buildings = []
     @armies    = []
-    @mine_count = 0
+    @mine_count = 20
     @draw_count = DRAW_SPEED
     for i in [0...HAND_COUNT]
       draw()
@@ -42,12 +104,29 @@ class Player
   draw: ->
     @hand.push(@deck.shift())
 
-  advance: ->
+  useCard: (name) ->
+    index = -1
+    for iHand in [0...@hand.length]
+      if @hand[iHand].name == name
+        index = iHand
+    if index == -1
+      console.log "not found: " + name
+    else
+      @trush.push @hand[index]
+      @hand.splice index, 1
+
+  advance: (game) ->
     @draw_count -= 1
     if @draw_count == 0
       draw()
       @draw_count = DRAW_SPEED
 
+    for building in @buildings
+      building.advance(game)
+      @mine_count += building.template.mine_productivity
+
+    for army in @armies
+      army.advance(game, this)
 
 class Card
   constructor: (@cost) ->
