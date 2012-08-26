@@ -1,6 +1,5 @@
 User = require('./user').User
 
-
 exports.start = (app, room) ->
   io = require('socket.io').listen(app)
 
@@ -34,7 +33,7 @@ exports.start = (app, room) ->
 
     socket.on 'users', (data) ->
       console.log(data)
-      names = (user.name for user in room.users).join "\n"
+      names = (u.name for u in room.users).join "\n"
       socket.emit('ls', { map: names })
 
     socket.on 'mv', (data) ->
