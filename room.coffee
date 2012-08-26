@@ -1,8 +1,9 @@
 Game = require('./game').Game
 
 class Room
-  constructor: ->
+  constructor: (name) ->
     console.log "new Room()"
+    @name = name
     @users = []
     @game = new Game()
 
@@ -27,13 +28,12 @@ class Room
         @users.splice(i, 1)
         break
 
-
   loginUser: (user, name) ->
     if user.logined
       false
     else
       user.name = name
-      user.logined = true;
+      user.logined = true
       true
 
 exports.Room = Room

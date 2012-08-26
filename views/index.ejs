@@ -30,10 +30,25 @@
             }
             $("#input").val("");
         });
+
+        for (var i=0; i<<%= rooms.length %>; i++) {
+            (function () {
+                var index = i;
+                $("#room"+index).click(function () {
+                    // TODO: send by websocket
+                });
+            }());
+        }
     });
 </script>
 
 <h2><%= msg %></h2>
+
+<ul>
+  <% for (var i=0; i<rooms.length; i++) { %>
+  <li><a href="#" id="room<%= i %>"><%= rooms[i] %></a></li>
+  <% } %>
+</ul>
 
 <p><textarea id="output" rows="10" cols="40">output</textarea></p>
 <p>
