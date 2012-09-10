@@ -4,6 +4,7 @@
 
 # How to start developing
     git clone git@github.com:TakenokoChocoHolic/electric-rain.git
+    cd electric-rain
     git remote add heroku git@heroku.com:electric-rain-8443.git
 
 # Push commits into GitHub repository

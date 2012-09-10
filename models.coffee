@@ -1,7 +1,7 @@
 require './util'
 
 HAND_COUNT = 3
-DRAW_SPEED = 10
+DRAW_FREQUENCY = 10
 MOVE_SPEED = 1
 
 class Point
@@ -101,7 +101,7 @@ class Player
     @buildings = []
     @armies    = []
     @mine_count = 20
-    @draw_count = DRAW_SPEED
+    @draw_count = DRAW_FREQUENCY
     for i in [0...HAND_COUNT]
       draw()
 
@@ -123,7 +123,7 @@ class Player
     @draw_count -= 1
     if @draw_count == 0
       draw()
-      @draw_count = DRAW_SPEED
+      @draw_count = DRAW_FREQUENCY
 
     for building in @buildings
       building.advance(game)
