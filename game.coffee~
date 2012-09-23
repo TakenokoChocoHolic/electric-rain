@@ -22,6 +22,6 @@ class Settings
     @mapWidth = 100
     @mapHeight = 100
     @maxTime = 10000
-    
+
 exports.Game = Game
 exports.Settings = Settings
