@@ -1,3 +1,4 @@
+_ = require 'underscore'
 require './util'
 
 HAND_COUNT = 3
@@ -95,7 +96,7 @@ class Mine
 
 class Player
   constructor: (@deck) ->
-    util.shuffle(@deck)
+    _.shuffle(@deck)
     @hand      = []
     @trash     = []
     @buildings = []
@@ -103,7 +104,7 @@ class Player
     @mine_count = 20
     @draw_count = DRAW_FREQUENCY
     for i in [0...HAND_COUNT]
-      draw()
+      @draw()
 
   draw: ->
     @hand.push(@deck.shift())
@@ -122,7 +123,7 @@ class Player
   advance: (game) ->
     @draw_count -= 1
     if @draw_count == 0
-      draw()
+      @draw()
       @draw_count = DRAW_FREQUENCY
 
     for building in @buildings
@@ -140,14 +141,15 @@ class BuildingCard extends Card
     super @cost
 
 class BuildingTemplate
-  constructor: (@name, @sight_range, @territory_range, @mine_productivity, @army_productivity) ->
+  constructor: (@name, @sight_range,
+    @territory_range, @mine_productivity, @army_productivity) ->
 
 buildings = [
-      new BuildingTemplate("本拠地", 10, 10, 10, 10)
-      new BuildingTemplate("塔",     10,  1,  1,  1)
-    , new BuildingTemplate("教会",    1, 10,  1,  1)
-    , new BuildingTemplate("兵舎",    1,  1, 10,  1)
-    , new BuildingTemplate("採掘場",  1,  1,  1, 10)
+    new BuildingTemplate("本拠地", 10, 10, 10, 10)
+    new BuildingTemplate("塔",     10,  1,  1,  1)
+  , new BuildingTemplate("教会",    1, 10,  1,  1)
+  , new BuildingTemplate("兵舎",    1,  1, 10,  1)
+  , new BuildingTemplate("採掘場",  1,  1,  1, 10)
   ]
 
 allBuildings = {}
@@ -155,10 +157,10 @@ for building in buildings
   allBuildings[building.name] = building
 
 cards = [
-      new BuildingCard(10, allBuildings["塔"])
-    , new BuildingCard(10, allBuildings["教会"])
-    , new BuildingCard(10, allBuildings["兵舎"])
-    , new BuildingCard(10, allBuildings["採掘場"])
+    new BuildingCard(10, allBuildings["塔"])
+  , new BuildingCard(10, allBuildings["教会"])
+  , new BuildingCard(10, allBuildings["兵舎"])
+  , new BuildingCard(10, allBuildings["採掘場"])
   ]
 
 allCards = {}
@@ -166,7 +168,10 @@ for card in cards
   allCards[card.name] = card
 
 exports.Point = Point
+exports.Player = Player
+exports.Map = Map
 exports.Card = Card
+exports.Building= Building
 exports.BuildingCard = BuildingCard
 exports.AllBuildings = allBuildings
 exports.HomeTemplate = allBuildings[0]
