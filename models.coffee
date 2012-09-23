@@ -140,7 +140,7 @@ class Player
 
     for building in @buildings
       building.advance(game)
-      @eine_count += building.template.mine_productivity
+      @mine_count += building.template.mine_productivity
 
     for army in @armies
       army.advance(game, this)
