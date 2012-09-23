@@ -10,6 +10,6 @@ class User
 
   setName: (name) -> @name = name
 
-  getName: () -> @name
+  getNmae: () -> @name
 
 exports.User = User

@@ -6,7 +6,7 @@ DRAW_FREQUENCY = 10
 MOVE_SPEED = 1
 
 class Point
-  constructor: (@x, @y) ->
+  constructor: (@x,@y) ->
 
   distance: (other) ->
     Math.abs(other.x - @x) + Math.abs(other.y - @y)
@@ -35,7 +35,7 @@ class Army
 
   # indexはPlayer.armiesにおける自分のindex
   advance: (game, me, index) ->
-    all = @from.distance(@to)
+    all = @form.distance(@to)
     now = @from.distance(@location)
     dx = @to.location.x - @from.location.x
     dx = ~~((now + 1) * dx / all) - ~~(now * dx / all)
@@ -49,7 +49,7 @@ class Army
       return
 
     for enemy in game.players
-      if enemy != mine
+      if enemy != me
         for iArmy in [0...enemy.armies.length]
           army = enemy.armies[iArmy]
           if @location.equals(army.location)
@@ -83,27 +83,21 @@ class Building
           return player
     throw new Error('Not found owner.')
 
-class Field
+class Map
   constructor: (@width, @height) ->
     @map = []
-    for y in [0...@height.length]
-      for x in [0...@width]
-        @setObject(new Point(x, y), null)
 
   setObject: (location, obj) ->
     # NOTE override map
-    @map[@getIndex(location)] = obj
+    @map[location.y *  height + location.x] = obj
 
-  getObject: (location) ->
-    @map[@getIndex(location)]
-  
-  getIndex: (location) ->
-    location.y * @height + location.x
+  getObject: (location)->
+    @map[location.y * height + location.x]
 
 class Mine
 
 class Player
-  constructor: (@deck, index, map) ->
+  constructor: (@deck) ->
     _.shuffle(@deck)
     @hand      = []
     @trash     = []
@@ -113,9 +107,6 @@ class Player
     @draw_count = DRAW_FREQUENCY
     for i in [0...HAND_COUNT]
       @draw()
-    homeLocation = { x: (index%2 * 50), y: (index/2 % 2) * 50 }
-    home = new Building(homeLocation, HomeTemplate, 0)
-    @constructBuilding(home, map)
 
   draw: ->
     @hand.push(@deck.shift())
@@ -144,10 +135,6 @@ class Player
 
     for army in @armies
       army.advance(game, this)
-      
-  constructBuilding: (building, map) ->
-    @buildings.push(building)
-    map.setObject(building)
 
 class Card
   constructor: (@cost) ->
@@ -185,10 +172,10 @@ for card in cards
 
 exports.Point = Point
 exports.Player = Player
-exports.Field = Field
+exports.Map = Map
 exports.Card = Card
 exports.Building= Building
 exports.BuildingCard = BuildingCard
-exports.AllBuildings = AllBuildings = allBuildings
-exports.HomeTemplate = HomeTemplate = allBuildings[0]
+exports.AllBuildings = allBuildings
+exports.HomeTemplate = allBuildings[0]
 exports.AllCards = allCards
