@@ -6,7 +6,7 @@ DRAW_FREQUENCY = 10
 MOVE_SPEED = 1
 
 class Point
-  constructor: (@x,@y) ->
+  constructor: (@x, @y) ->
 
   distance: (other) ->
     Math.abs(other.x - @x) + Math.abs(other.y - @y)
@@ -49,8 +49,8 @@ class Army
       return
 
     for enemy in game.players
-      if enemy != me
-        for iArmy in [0...enemy.armies.length]
+      if enemy != mine
+        for iArmy in [0..enemy.armies.length]
           army = enemy.armies[iArmy]
           if @location.equals(army.location)
             if @power <= army.power
@@ -86,13 +86,19 @@ class Building
 class Map
   constructor: (@width, @height) ->
     @map = []
+    for y in [0..@height.length]
+      for x in [0..@width.length]
+        @setObject({x: x, y: y}, null)
 
   setObject: (location, obj) ->
     # NOTE override map
-    @map[location.y *  height + location.x] = obj
+    @map[@getIndex(location)] = obj
 
-  getObject: (location)->
-    @map[location.y * height + location.x]
+  getObject: (location) ->
+    @map[@getIndex(location)]
+  
+  getIndex: (location) ->
+    location.y * @height + location.x
 
 class Mine
 
@@ -105,7 +111,7 @@ class Player
     @armies    = []
     @gold = 20
     @draw_count = DRAW_FREQUENCY
-    for i in [0...HAND_COUNT]
+    for i in [0..HAND_COUNT]
       @draw()
 
   draw: ->
@@ -113,7 +119,7 @@ class Player
 
   useCard: (name) ->
     index = -1
-    for iHand in [0...@hand.length]
+    for iHand in [0..@hand.length]
       if @hand[iHand].name == name
         index = iHand
     if index == -1
