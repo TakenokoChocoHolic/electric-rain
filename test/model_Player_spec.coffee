@@ -29,3 +29,15 @@ describe 'Player', ->
       @player.discardCard('pit')
       assert.equal models.Constants.INITIAL_CARD_COUNT,
         @player.hand.length
+
+    it 'advance turns for drawing no card', ->
+      for i in [0...(models.Constants.DRAW_FREQUENCY - 1)]
+        @player.advance()
+      assert.equal models.Constants.INITIAL_CARD_COUNT,
+        @player.hand.length
+
+    it 'advance turns for drawing cards', ->
+      for i in [0...(models.Constants.DRAW_FREQUENCY * 3)]
+        @player.advance()
+      assert.equal models.Constants.INITIAL_CARD_COUNT + 3,
+        @player.hand.length

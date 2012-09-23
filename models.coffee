@@ -111,7 +111,7 @@ class Player
     @buildings = []
     @armies    = []
     @gold = 20
-    @draw_count = Constants.DRAW_FREQUENCY
+    @draw_count = 0
     for i in [0...Constants.INITIAL_CARD_COUNT]
       @drawCard()
 
@@ -119,26 +119,24 @@ class Player
     @hand.push(@deck.shift())
 
   discardCard: (name) ->
-    index = -1
-    for iHand in [0...@hand.length]
-      if @hand[iHand].name == name
-        index = iHand
-    if index == -1
-      console.log "not found: " + name
-    else
+    index = _.find @hand, (card) -> card.name == name
+    if index != undefined
       @trash.push @hand[index]
       @hand.splice index, 1
-    index >= 0
+    else
+      # TODO: print the error
+      console.log "not found: " + name
+    index != undefined
 
   advance: (game) ->
-    @draw_count -= 1
-    if @draw_count == 0
+    @draw_count += 1
+    if @draw_count == Constants.DRAW_FREQUENCY
       @drawCard()
-      @draw_count = Constants.DRAW_FREQUENCY
+      @draw_count = 0
 
     for building in @buildings
       building.advance(game)
-      @eine_count += building.template.mineProductivity
+      @gold += building.template.mineProductivity
 
     for army in @armies
       army.advance(game, this)
