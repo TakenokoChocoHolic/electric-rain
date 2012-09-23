@@ -113,14 +113,16 @@ class Player
     @armies    = []
     @gold = Constants.INITIAL_GOLD
     @draw_count = 0
-    for i in [0...Constants.INITIAL_CARD_COUNT]
-      @drawCard()
 
   base: ->
     @buildings[0]
 
   drawCard: ->
     @hand.push(@deck.shift())
+
+  drawCards: (num) ->
+    for i in [0...num]
+      @drawCard()
 
   discardCard: (name) ->
     index = _.find @hand, (card) -> card.name == name
