@@ -8,7 +8,7 @@ describe 'Building', ->
     @subject = new models.Building(@locc)
 
 describe 'AllBuildings', ->
-  it 'has 4 items', ->
+  it 'should have basic cards', ->
     all = models.AllBuildings
     assert.notEqual undefined, all
     assert.equal null, all['bad_keyword']

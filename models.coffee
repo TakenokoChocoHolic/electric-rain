@@ -3,6 +3,7 @@ require './util'
 
 class Constants
   @INITIAL_CARD_COUNT: 3
+  @INITIAL_GOLD: 20
   @DRAW_FREQUENCY: 10
   @MOVE_SPEED: 1
 
@@ -23,9 +24,9 @@ class Army
   reach: (game, me, index) ->
     owner = @to.getOwner
     if me == owner
-      @to.army_power += @power
-    else if @to.army_power > @power
-      @to.army_power -= @power
+      @to.power += @power
+    else if @to.power > @power
+      @to.power -= @power
     else
       index = owner.buildings.indexOf(@to)
       owner.buildings.splice(index, 1)
@@ -39,11 +40,11 @@ class Army
     all = @from.distance(@to)
     now = @from.distance(@location)
     dx = @to.location.x - @from.location.x
-    dx = ~~((now + 1) * dx / all) - ~~(now * dx / all)
     dy = @to.location.y - @from.location.y
-    dy = ~~((now + 1) * dy / all) - ~~(now * dy / all)
-    @location.x += dx
-    @location.y += dy
+    @location.x += ~~((now + Constants.MOVE_SPEED) * dx / all) -
+      ~~(now * dx / all)
+    @location.y += ~~((now + Constants.MOVE_SPEED) * dy / all) -
+      ~~(now * dy / all)
 
     if @to.location.equals(@location)
       reach game, me, index
@@ -66,10 +67,10 @@ class Army
               enemy.armies.splice(iArmy, 1)
 
 class Building
-  constructor: (@location, @template, @army_power) ->
+  constructor: (@location, @template, @power) ->
 
   advance: ->
-    @army_power += @template.armyProductivity
+    @power += @template.armyProductivity
 
   isOwned: (player) ->
     for building in player.buildings
@@ -110,10 +111,13 @@ class Player
     @trash     = []
     @buildings = []
     @armies    = []
-    @gold = 20
+    @gold = Constants.INITIAL_GOLD
     @draw_count = 0
     for i in [0...Constants.INITIAL_CARD_COUNT]
       @drawCard()
+
+  base: ->
+    @buildings[0]
 
   drawCard: ->
     @hand.push(@deck.shift())
@@ -189,5 +193,5 @@ exports.Building= Building
 exports.BuildingTemplate = BuildingTemplate
 exports.BuildingCard = BuildingCard
 exports.AllBuildings = AllBuildings = allBuildings
-exports.HomeTemplate = HomeTemplate = allBuildings[0]
+exports.HomeTemplate = HomeTemplate = allBuildings['base']
 exports.AllCards = allCards

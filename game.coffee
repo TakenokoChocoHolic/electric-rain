@@ -21,6 +21,13 @@ class Game
   advance: ->
     @time += 1
     @player.advance(this)
+
+  sortie: (player, fromBuilding, toBuilding, power) ->
+    return null if fromBuilding.power < power
+    fromBuilding.power -= power
+    army = new models.Army(fromBuilding.location, toBuilding.location, power)
+    player.armies.push(army)
+    army
     
   constructBuilding: (player, location, building) ->
     player.buildings.push(building)
@@ -38,7 +45,7 @@ class Settings
     @mapWidth = 100
     @mapHeight = 100
     @maxTime = 10000
-    @deckPatterns = []
+    @deckPatterns = [[], [], [], []]
     
 exports.Game = Game
 exports.Settings = Settings
