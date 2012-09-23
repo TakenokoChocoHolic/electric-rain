@@ -68,7 +68,7 @@ class Building
   constructor: (@location, @template, @army_power) ->
 
   advance: ->
-    @army_power += @template.army_productivity
+    @army_power += @template.armyProductivity
 
   isOwned: (player) ->
     for building in player.buildings
@@ -140,7 +140,7 @@ class Player
 
     for building in @buildings
       building.advance(game)
-      @eine_count += building.template.mine_productivity
+      @eine_count += building.template.mineProductivity
 
     for army in @armies
       army.advance(game, this)
@@ -157,8 +157,8 @@ class BuildingCard extends Card
     super @cost
 
 class BuildingTemplate
-  constructor: (@name, @sight_range,
-    @territory_range, @mine_productivity, @army_productivity) ->
+  constructor: (@name, @sightRange,
+    @territoryRange, @mineProductivity, @armyProductivity) ->
 
 buildings = [
     new BuildingTemplate("本拠地", 10, 10, 10, 10)
@@ -188,6 +188,7 @@ exports.Player = Player
 exports.Field = Field
 exports.Card = Card
 exports.Building= Building
+exports.BuildingTemplate = BuildingTemplate
 exports.BuildingCard = BuildingCard
 exports.AllBuildings = AllBuildings = allBuildings
 exports.HomeTemplate = HomeTemplate = allBuildings[0]
