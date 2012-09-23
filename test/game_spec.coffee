@@ -8,5 +8,3 @@ describe "Game", ->
       settings = new game.Settings()
       assert.notEqual null, new game.Game(settings)
 
-
-
