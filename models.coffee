@@ -120,7 +120,7 @@ class Player
   draw: ->
     @hand.push(@deck.shift())
 
-  useCard: (name) ->
+  useCard: (name, location) ->
     index = -1
     for iHand in [0...@hand.length]
       if @hand[iHand].name == name
@@ -130,6 +130,7 @@ class Player
     else
       @trush.push @hand[index]
       @hand.splice index, 1
+    constructBuilding(new Building(location, allBuildings[name], 0))
     index >= 0
 
   advance: (game) ->
