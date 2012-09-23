@@ -17,9 +17,3 @@ describe 'Point', ->
   describe '#distance', ->
     it 'shoould calc manhattan distance', ->
       assert.equal(3, new Point(2, 8).distance(new Point(3, 10)))
-
-describe 'Field', ->
-  Field = models.Field
-  describe '#constructor', ->
-    it 'should create instance', ->
-      assert.notEqual null, new Field(100, 100)

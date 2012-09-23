@@ -1,9 +1,10 @@
 _ = require 'underscore'
 require './util'
 
-HAND_COUNT = 3
-DRAW_FREQUENCY = 10
-MOVE_SPEED = 1
+class Constants
+  @INITIAL_CARD_COUNT: 3
+  @DRAW_FREQUENCY: 10
+  @MOVE_SPEED: 1
 
 class Point
   constructor: (@x, @y) ->
@@ -68,7 +69,7 @@ class Building
   constructor: (@location, @template, @army_power) ->
 
   advance: ->
-    @army_power += @template.army_productivity
+    @army_power += @template.armyProductivity
 
   isOwned: (player) ->
     for building in player.buildings
@@ -85,17 +86,17 @@ class Building
 
 class Field
   constructor: (@width, @height) ->
-    @map = []
-    for y in [0...@height.length]
+    @field = []
+    for y in [0...@height]
       for x in [0...@width]
         @setObject(new Point(x, y), null)
 
   setObject: (location, obj) ->
-    # NOTE override map
-    @map[@getIndex(location)] = obj
+    # NOTE override field
+    @field[@getIndex(location)] = obj
 
   getObject: (location) ->
-    @map[@getIndex(location)]
+    @field[@getIndex(location)]
   
   getIndex: (location) ->
     location.y * @height + location.x
@@ -103,24 +104,21 @@ class Field
 class Mine
 
 class Player
-  constructor: (@deck, index, map) ->
+  constructor: (@deck) ->
     _.shuffle(@deck)
     @hand      = []
     @trash     = []
     @buildings = []
     @armies    = []
     @gold = 20
-    @draw_count = DRAW_FREQUENCY
-    for i in [0...HAND_COUNT]
-      @draw()
-    homeLocation = { x: (index%2 * 50), y: (index/2 % 2) * 50 }
-    home = new Building(homeLocation, HomeTemplate, 0)
-    @constructBuilding(home, map)
+    @draw_count = Constants.DRAW_FREQUENCY
+    for i in [0...Constants.INITIAL_CARD_COUNT]
+      @drawCard()
 
-  draw: ->
+  drawCard: ->
     @hand.push(@deck.shift())
 
-  useCard: (name) ->
+  discardCard: (name) ->
     index = -1
     for iHand in [0...@hand.length]
       if @hand[iHand].name == name
@@ -128,44 +126,45 @@ class Player
     if index == -1
       console.log "not found: " + name
     else
-      @trush.push @hand[index]
+      @trash.push @hand[index]
       @hand.splice index, 1
     index >= 0
 
   advance: (game) ->
     @draw_count -= 1
     if @draw_count == 0
-      @draw()
-      @draw_count = DRAW_FREQUENCY
+      @drawCard()
+      @draw_count = Constants.DRAW_FREQUENCY
 
     for building in @buildings
       building.advance(game)
-      @mine_count += building.template.mine_productivity
+      @eine_count += building.template.mineProductivity
 
     for army in @armies
       army.advance(game, this)
-      
-  constructBuilding: (building, map) ->
-    @buildings.push(building)
-    map.setObject(building)
 
 class Card
-  constructor: (@cost) ->
+  constructor: (@name, @cost) ->
+
+  execute: (player, location, game) ->
 
 class BuildingCard extends Card
-  constructor: (@cost, @template) ->
-    super @cost
+  constructor: (@name, @cost, @template) ->
+    super @name, @cost
+    
+  execute: (player, location, game) ->
+    game.constructBuilding(player, location, new Building(location, allBuildings[@template.name], 0))
 
 class BuildingTemplate
-  constructor: (@name, @sight_range,
-    @territory_range, @mine_productivity, @army_productivity) ->
+  constructor: (@name, @sightRange,
+    @territoryRange, @mineProductivity, @armyProductivity) ->
 
 buildings = [
-    new BuildingTemplate("本拠地", 10, 10, 10, 10)
-    new BuildingTemplate("塔",     10,  1,  1,  1)
-  , new BuildingTemplate("教会",    1, 10,  1,  1)
-  , new BuildingTemplate("兵舎",    1,  1, 10,  1)
-  , new BuildingTemplate("採掘場",  1,  1,  1, 10)
+    new BuildingTemplate('base',    10, 10, 10, 10)
+  , new BuildingTemplate('tower',   10,  1,  1,  1)
+  , new BuildingTemplate('church',   1, 10,  1,  1)
+  , new BuildingTemplate('barracks', 1,  1, 10,  1)
+  , new BuildingTemplate('pit',      1,  1,  1, 10)
   ]
 
 allBuildings = {}
@@ -173,21 +172,23 @@ for building in buildings
   allBuildings[building.name] = building
 
 cards = [
-    new BuildingCard(10, allBuildings["塔"])
-  , new BuildingCard(10, allBuildings["教会"])
-  , new BuildingCard(10, allBuildings["兵舎"])
-  , new BuildingCard(10, allBuildings["採掘場"])
+    new BuildingCard('tower',    10, allBuildings['tower'])
+  , new BuildingCard('church',   10, allBuildings['church'])
+  , new BuildingCard('barracks', 10, allBuildings['barracks'])
+  , new BuildingCard('pit',      10, allBuildings['pit'])
   ]
 
 allCards = {}
 for card in cards
   allCards[card.name] = card
 
+exports.Constants = Constants
 exports.Point = Point
 exports.Player = Player
 exports.Field = Field
 exports.Card = Card
 exports.Building= Building
+exports.BuildingTemplate = BuildingTemplate
 exports.BuildingCard = BuildingCard
 exports.AllBuildings = AllBuildings = allBuildings
 exports.HomeTemplate = HomeTemplate = allBuildings[0]
