@@ -103,7 +103,8 @@ class Map
 class Mine
 
 class Player
-  constructor: (@deck) ->
+  constructor: (name_num_card_pairs) ->
+    @deck = @prepareDeck(name_num_card_pairs)
     _.shuffle(@deck)
     @hand      = []
     @trash     = []
@@ -113,6 +114,13 @@ class Player
     @draw_count = DRAW_FREQUENCY
     for i in [0..HAND_COUNT]
       @draw()
+
+  prepareDeck: (name_num_pairs) ->
+    ret = []
+    for name, num of name_num_pairs
+      for i in [0 ... num]
+        ret.push allCards[name]
+    ret
 
   draw: ->
     @hand.push(@deck.shift())
