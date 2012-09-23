@@ -1,16 +1,16 @@
 models = require './models.coffee'
 
 class Game
-  constructor: (@settings) ->
+  constructor: (settings) ->
     @time = 1
     @players = []
-    @map = new models.Map(@settings.mapWidth, @settings.mapHeight)
-    for i in [0...@settings.playerCount]
-      player = new models.Player([], i, @map)
+    @field = new models.Field(settings.mapWidth, settings.mapHeight)
+    for i in [0...settings.playerCount]
+      player = new models.Player([], i, @field)
       @players.push(player)
 
   getMapStr: ->
-    @map.str()
+    @field.str()
 
   advance: ->
     @time += 1
