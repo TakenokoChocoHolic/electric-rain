@@ -3,10 +3,22 @@ models = require "../models"
 game = require "../game"
 
 describe "Game", ->
+  before ->
+    deckA = [] #{church: 5, tower: 7}
+    deckB = []
+    deckC = []
+    @settings = new game.Settings()
+    @settings.deckPatterns = [deckA, deckB, deckC]
+
   describe '#constructor()', ->
     it 'should create instance', ->
-      settings = new game.Settings()
-      assert.notEqual null, new game.Game(settings)
+      assert.notEqual null, new game.Game(@settings)
+
+  describe '#constructor()', ->
+    it 'should create players', ->
+      game = new game.Game(@settings)
+      assert.notEqual null, game.players
+      assert.equal 3, game.players.length
 
 #  describe '#constructor()', ->
 #    beforeEach ->
@@ -24,3 +36,9 @@ describe "Game", ->
 #      game.players[0].draw()
 #      assert.equal models.Constants.INITIAL_CARD_COUNT + 2,
 #        game.players[0].hand.size
+    
+#  describe 'create deck from deckPattern', ->
+#    it 'should be OK', ->
+#      game = new game.Game(@settings)
+#      player = game.players[0]
+#      assert.equal 12, player.deck.length

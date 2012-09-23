@@ -7,8 +7,9 @@ class Game
     @time = 1
     @players = []
     @field = new models.Field(settings.mapWidth, settings.mapHeight)
-    for i in [0...settings.playerCount]
-      player = new models.Player([], i, @field)
+
+    for deck, i in settings.deckPatterns
+      player = new models.Player(deck, i, @field)
       homeLocation = new models.Point((i%2) * 50, (i/2 % 2) * 50)
       home = new models.Building(homeLocation, models.HomeTemplate, 0)
       @constructBuilding(player, homeLocation, home)
@@ -34,10 +35,10 @@ class Game
 
 class Settings
   constructor: ->
-    @playerCount = 4
     @mapWidth = 100
     @mapHeight = 100
     @maxTime = 10000
+    @deckPatterns = []
     
 exports.Game = Game
 exports.Settings = Settings
