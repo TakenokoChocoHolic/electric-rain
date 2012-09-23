@@ -1,9 +1,10 @@
 _ = require 'underscore'
 require './util'
 
-HAND_COUNT = 3
-DRAW_FREQUENCY = 10
-MOVE_SPEED = 1
+class Constants
+  @INITIAL_CARD_COUNT: 3
+  @DRAW_FREQUENCY: 10
+  @MOVE_SPEED: 1
 
 class Point
   constructor: (@x, @y) ->
@@ -85,17 +86,17 @@ class Building
 
 class Field
   constructor: (@width, @height) ->
-    @map = []
-    for y in [0...@height.length]
+    @field = []
+    for y in [0...@height]
       for x in [0...@width]
         @setObject(new Point(x, y), null)
 
   setObject: (location, obj) ->
-    # NOTE override map
-    @map[@getIndex(location)] = obj
+    # NOTE override field
+    @field[@getIndex(location)] = obj
 
   getObject: (location) ->
-    @map[@getIndex(location)]
+    @field[@getIndex(location)]
   
   getIndex: (location) ->
     location.y * @height + location.x
@@ -103,7 +104,7 @@ class Field
 class Mine
 
 class Player
-  constructor: (name_num_card_pairs, index, map) ->
+  constructor: (name_num_card_pairs, index, field) ->
     @deck = @prepareDeck(name_num_card_pairs)
     _.shuffle(@deck)
     @hand      = []
@@ -111,12 +112,12 @@ class Player
     @buildings = []
     @armies    = []
     @gold = 20
-    @draw_count = DRAW_FREQUENCY
-    for i in [0...HAND_COUNT]
+    @draw_count = Constants.DRAW_FREQUENCY
+    for i in [0...Constants.INITIAL_CARD_COUNT]
       @draw()
     homeLocation = { x: (index%2 * 50), y: (index/2 % 2) * 50 }
     home = new Building(homeLocation, HomeTemplate, 0)
-    @constructBuilding(home, map)
+    @constructBuilding(home, field)
 
   prepareDeck: (name_num_pairs) ->
     ret = []
@@ -144,7 +145,7 @@ class Player
     @draw_count -= 1
     if @draw_count == 0
       @draw()
-      @draw_count = DRAW_FREQUENCY
+      @draw_count = Constants.DRAW_FREQUENCY
 
     for building in @buildings
       building.advance(game)
@@ -153,9 +154,9 @@ class Player
     for army in @armies
       army.advance(game, this)
       
-  constructBuilding: (building, map) ->
+  constructBuilding: (building, field) ->
     @buildings.push(building)
-    map.setObject(building)
+    field.setObject(building)
 
 class Card
   constructor: (@cost) ->

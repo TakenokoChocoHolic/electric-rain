@@ -1,7 +1,7 @@
-#assert = require 'assert'
-#models = require "../models"
-#game = require "../game"
-#
+assert = require 'assert'
+models = require "../models"
+game = require "../game"
+
 #describe "Game", ->
 #  describe '#constructor()', ->
 #    it 'should create instance', ->
