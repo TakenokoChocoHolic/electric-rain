@@ -17,41 +17,41 @@ class Point
     other.x == @x and other.y == @y
 
 class Army
-  constructor: (@from, @to, @power) ->
-    @location = @from.location
+  constructor: (@startTime, @fromBuilding, @toBuilding, @power) ->
+    @location = @fromBuilding.location
 
   # indexはPlayer.armiesにおける自分のindex
   reach: (game, me, index) ->
-    owner = @to.getOwner
+    owner = @toBuilding.getOwner
     if me == owner
-      @to.power += @power
-    else if @to.power > @power
-      @to.power -= @power
+      @toBuilding.power += @power
+    else if @toBuilding.power > @power
+      @toBuilding.power -= @power
     else
-      index = owner.buildings.indexOf(@to)
+      index = owner.buildings.indexOf(@toBuilding)
       owner.buildings.splice(index, 1)
-      @to.power = @power - @to.power
-      me.builings.push(@to)
+      @toBuilding.power = @power - @toBuilding.power
+      me.builings.push(@toBuilding)
     index = me.armies.indexOf(this)
     me.armies.splice(index, 1)
 
   # indexはPlayer.armiesにおける自分のindex
   advance: (game, me, index) ->
-    all = @from.distance(@to)
-    now = @from.distance(@location)
-    dx = @to.location.x - @from.location.x
-    dy = @to.location.y - @from.location.y
+    all = @fromBuilding.location.distance(@toBuilding.location)
+    now = @fromBuilding.location.distance(@location)
+    dx = @toBuilding.location.x - @fromBuilding.location.x
+    dy = @toBuilding.location.y - @fromBuilding.location.y
     @location.x += ~~((now + Constants.MOVE_SPEED) * dx / all) -
       ~~(now * dx / all)
     @location.y += ~~((now + Constants.MOVE_SPEED) * dy / all) -
       ~~(now * dy / all)
 
-    if @to.location.equals(@location)
+    if @toBuilding.location.equals(@location)
       reach game, me, index
       return
 
     for enemy in game.players
-      if enemy != mine
+      if enemy != me
         for iArmy in [0...enemy.armies.length]
           army = enemy.armies[iArmy]
           if @location.equals(army.location)
@@ -157,7 +157,8 @@ class BuildingCard extends Card
     super @name, @cost
     
   execute: (player, location, game) ->
-    game.constructBuilding(player, location, new Building(location, allBuildings[@template.name], 0))
+    game.constructBuilding(player, location,
+      new Building(location, allBuildings[@template.name], 0))
 
 class BuildingTemplate
   constructor: (@name, @sightRange,
@@ -187,6 +188,7 @@ for card in cards
   allCards[card.name] = card
 
 exports.Constants = Constants
+exports.Army = Army
 exports.Point = Point
 exports.Player = Player
 exports.Field = Field

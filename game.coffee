@@ -25,12 +25,13 @@ class Game
 
   advance: ->
     @time += 1
-    @player.advance(this)
+    for p in @players
+      p.advance(this)
 
   sortie: (player, fromBuilding, toBuilding, power) ->
     return null if fromBuilding.power < power
     fromBuilding.power -= power
-    army = new models.Army(fromBuilding.location, toBuilding.location, power)
+    army = new models.Army(fromBuilding, toBuilding, power)
     player.armies.push(army)
     army
     

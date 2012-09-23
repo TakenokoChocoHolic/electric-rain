@@ -10,13 +10,14 @@ describe 'Army', ->
     @friend.advance(@game) for i in [0...10]
 
   it 'should reach an enemy building', ->
-    console.log @friend.base()
-    console.log @enemy.base()
-    #army = @game.sortie(@friend.base(), @enemy.base(), 100)
-    #requiredTurns = Math.ceil(
-    #  army.from.distance(army.to) / models.Constants.MOVE_SPEED)
-    ## Move army before reaching the target building
-    #@friend.advance(@game) for i in [0...(requiredTurns-1)]
-    #assert.equal army, @friend.armies[0]
-    ## Move army to reach the target building
-    #@friend.advance(@game)
+    army = @game.sortie(@friend, @friend.base(), @enemy.base(), 100)
+    requiredTurns = Math.ceil(
+      army.fromBuilding.location.distance(army.toBuilding.location) /
+      models.Constants.MOVE_SPEED)
+    # Move army before reaching the target building
+    @friend.advance(@game) for i in [0...(requiredTurns-1)]
+    assert.equal army, @friend.armies[0]
+    # Move army to reach the target building
+    @friend.advance(@game)
+    console.log(army)
+    assert.equal 0, @friend.armies.length
