@@ -85,17 +85,17 @@ class Building
 
 class Field
   constructor: (@width, @height) ->
-    @map = []
+    @field = []
     for y in [0...@height.length]
       for x in [0...@width]
         @setObject(new Point(x, y), null)
 
   setObject: (location, obj) ->
-    # NOTE override map
-    @map[@getIndex(location)] = obj
+    # NOTE override field
+    @field[@getIndex(location)] = obj
 
   getObject: (location) ->
-    @map[@getIndex(location)]
+    @field[@getIndex(location)]
   
   getIndex: (location) ->
     location.y * @height + location.x
@@ -103,7 +103,7 @@ class Field
 class Mine
 
 class Player
-  constructor: (@deck, index, map) ->
+  constructor: (@deck) ->
     _.shuffle(@deck)
     @hand      = []
     @trash     = []
@@ -113,14 +113,11 @@ class Player
     @draw_count = DRAW_FREQUENCY
     for i in [0...HAND_COUNT]
       @draw()
-    homeLocation = { x: (index%2 * 50), y: (index/2 % 2) * 50 }
-    home = new Building(homeLocation, HomeTemplate, 0)
-    @constructBuilding(home, map)
 
   draw: ->
     @hand.push(@deck.shift())
 
-  useCard: (name) ->
+  discardCard: (name) ->
     index = -1
     for iHand in [0...@hand.length]
       if @hand[iHand].name == name
@@ -144,17 +141,18 @@ class Player
 
     for army in @armies
       army.advance(game, this)
-      
-  constructBuilding: (building, map) ->
-    @buildings.push(building)
-    map.setObject(building)
 
 class Card
   constructor: (@cost) ->
 
+  execute: (player, location, game) ->
+
 class BuildingCard extends Card
   constructor: (@cost, @template) ->
     super @cost
+    
+  execute: (player, location, game) ->
+    game.constructBuilding(player, location, new Building(location, allBuildings[@template.name], 0))
 
 class BuildingTemplate
   constructor: (@name, @sight_range,
