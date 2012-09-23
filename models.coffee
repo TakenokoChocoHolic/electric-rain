@@ -112,7 +112,7 @@ class Player
     @gold = 20
     @draw_count = DRAW_FREQUENCY
     for i in [0..HAND_COUNT]
-      draw()
+      @draw()
 
   draw: ->
     @hand.push(@deck.shift())
