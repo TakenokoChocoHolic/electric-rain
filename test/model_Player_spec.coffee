@@ -1,12 +1,14 @@
 assert = require "assert"
 models = require "../models"
+game = require "../game"
 
 describe 'Player', ->
   beforeEach ->
-    @deck = []
-    for i in [0...40]
-      @deck.push(models.AllCards['pit'])
-    @player = new models.Player(@deck)
+    settings = new game.Settings()
+    settings.deckPatterns = [{pit: 40}]
+    @game = new game.Game(settings)
+    @player = @game.players[0]
+    @game.start() 
 
   describe '#constructor()', ->
     it 'should create instance', ->

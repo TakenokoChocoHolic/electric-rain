@@ -112,11 +112,13 @@ class Player
     @armies    = []
     @gold = 20
     @draw_count = 0
-    for i in [0...Constants.INITIAL_CARD_COUNT]
-      @drawCard()
 
   drawCard: ->
     @hand.push(@deck.shift())
+
+  drawCards: (num) ->
+    for i in [0...num]
+      @drawCard()
 
   discardCard: (name) ->
     index = _.find @hand, (card) -> card.name == name
@@ -189,5 +191,5 @@ exports.Building= Building
 exports.BuildingTemplate = BuildingTemplate
 exports.BuildingCard = BuildingCard
 exports.AllBuildings = AllBuildings = allBuildings
-exports.HomeTemplate = HomeTemplate = allBuildings[0]
+exports.HomeTemplate = HomeTemplate = allBuildings['base']
 exports.AllCards = allCards

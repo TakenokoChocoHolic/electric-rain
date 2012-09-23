@@ -8,12 +8,17 @@ class Game
     @players = []
     @field = new models.Field(settings.mapWidth, settings.mapHeight)
 
-    for deck, i in settings.deckPatterns
+    for deckPattern, i in settings.deckPatterns
+      deck = @prepareDeck(deckPattern)
       player = new models.Player(deck, i, @field)
       homeLocation = new models.Point((i%2) * 50, (i/2 % 2) * 50)
       home = new models.Building(homeLocation, models.HomeTemplate, 0)
       @constructBuilding(player, homeLocation, home)
       @players.push(player)
+
+  start: ->
+    for p in @players
+      p.drawCards(models.Constants.INITIAL_CARD_COUNT)
 
   getMapStr: ->
     @field.str()
