@@ -161,11 +161,11 @@ class BuildingTemplate
     @territoryRange, @mineProductivity, @armyProductivity) ->
 
 buildings = [
-    new BuildingTemplate("本拠地", 10, 10, 10, 10)
-    new BuildingTemplate("塔",     10,  1,  1,  1)
-  , new BuildingTemplate("教会",    1, 10,  1,  1)
-  , new BuildingTemplate("兵舎",    1,  1, 10,  1)
-  , new BuildingTemplate("採掘場",  1,  1,  1, 10)
+    new BuildingTemplate('base',    10, 10, 10, 10)
+  , new BuildingTemplate('tower',   10,  1,  1,  1)
+  , new BuildingTemplate('church',   1, 10,  1,  1)
+  , new BuildingTemplate('barracks', 1,  1, 10,  1)
+  , new BuildingTemplate('pit',      1,  1,  1, 10)
   ]
 
 allBuildings = {}
@@ -173,10 +173,10 @@ for building in buildings
   allBuildings[building.name] = building
 
 cards = [
-    new BuildingCard(10, allBuildings["塔"])
-  , new BuildingCard(10, allBuildings["教会"])
-  , new BuildingCard(10, allBuildings["兵舎"])
-  , new BuildingCard(10, allBuildings["採掘場"])
+    new BuildingCard(10, allBuildings["tower"])
+  , new BuildingCard(10, allBuildings["church"])
+  , new BuildingCard(10, allBuildings["barracks"])
+  , new BuildingCard(10, allBuildings["pit"])
   ]
 
 allCards = {}
