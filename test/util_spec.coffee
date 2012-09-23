@@ -16,9 +16,3 @@ describe 'util', ->
       obj.value = 2
       assert.equal("abc", util.clone(obj).name)
       assert.equal(2, util.clone(obj).value)
-
-describe 'map', ->
-  Game = require('../game').Game
-  describe '#constructor()', ->
-    it 'should create instance', ->
-      game = new Game()
