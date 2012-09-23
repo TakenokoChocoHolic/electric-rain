@@ -1,9 +1,10 @@
 _ = require 'underscore'
 require './util'
 
-HAND_COUNT = 3
-DRAW_FREQUENCY = 10
-MOVE_SPEED = 1
+class Constants
+  @INITIAL_CARD_COUNT: 3
+  @DRAW_FREQUENCY: 10
+  @MOVE_SPEED: 1
 
 class Point
   constructor: (@x, @y) ->
@@ -86,7 +87,7 @@ class Building
 class Field
   constructor: (@width, @height) ->
     @field = []
-    for y in [0...@height.length]
+    for y in [0...@height]
       for x in [0...@width]
         @setObject(new Point(x, y), null)
 
@@ -110,9 +111,16 @@ class Player
     @buildings = []
     @armies    = []
     @gold = 20
-    @draw_count = DRAW_FREQUENCY
-    for i in [0...HAND_COUNT]
+    @draw_count = Constants.DRAW_FREQUENCY
+    for i in [0...Constants.INITIAL_CARD_COUNT]
       @draw()
+
+  prepareDeck: (name_num_pairs) ->
+    ret = []
+    for name, num of name_num_pairs
+      for i in [0 ... num]
+        ret.push allCards[name]
+    ret
 
   draw: ->
     @hand.push(@deck.shift())
@@ -133,7 +141,7 @@ class Player
     @draw_count -= 1
     if @draw_count == 0
       @draw()
-      @draw_count = DRAW_FREQUENCY
+      @draw_count = Constants.DRAW_FREQUENCY
 
     for building in @buildings
       building.advance(game)
