@@ -83,10 +83,10 @@ class Building
           return player
     throw new Error('Not found owner.')
 
-class Map
+class Field
   constructor: (@width, @height) ->
     @map = []
-    for y in [0...@height]
+    for y in [0...@height.length]
       for x in [0...@width]
         @setObject(new Point(x, y), null)
 
@@ -185,7 +185,7 @@ for card in cards
 
 exports.Point = Point
 exports.Player = Player
-exports.Map = Map
+exports.Field = Field
 exports.Card = Card
 exports.Building= Building
 exports.BuildingCard = BuildingCard
