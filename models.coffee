@@ -115,13 +115,6 @@ class Player
     for i in [0...Constants.INITIAL_CARD_COUNT]
       @draw()
 
-  prepareDeck: (name_num_pairs) ->
-    ret = []
-    for name, num of name_num_pairs
-      for i in [0 ... num]
-        ret.push allCards[name]
-    ret
-
   draw: ->
     @hand.push(@deck.shift())
 

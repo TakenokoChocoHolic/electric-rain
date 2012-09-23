@@ -23,6 +23,13 @@ class Game
     player.buildings.push(building)
     @field.setObject(location, building)
 
+  prepareDeck: (name_num_pairs) ->
+    ret = []
+    for name, num of name_num_pairs
+      for i in [0 ... num]
+        ret.push models.AllCards[name]
+    ret
+
 class Settings
   constructor: ->
     @playerCount = 4
