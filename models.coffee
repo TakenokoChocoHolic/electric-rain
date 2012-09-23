@@ -113,9 +113,9 @@ class Player
     @gold = 20
     @draw_count = Constants.DRAW_FREQUENCY
     for i in [0...Constants.INITIAL_CARD_COUNT]
-      @draw()
+      @drawCard()
 
-  draw: ->
+  drawCard: ->
     @hand.push(@deck.shift())
 
   discardCard: (name) ->
@@ -126,14 +126,14 @@ class Player
     if index == -1
       console.log "not found: " + name
     else
-      @trush.push @hand[index]
+      @trash.push @hand[index]
       @hand.splice index, 1
     index >= 0
 
   advance: (game) ->
     @draw_count -= 1
     if @draw_count == 0
-      @draw()
+      @drawCard()
       @draw_count = Constants.DRAW_FREQUENCY
 
     for building in @buildings
@@ -144,13 +144,13 @@ class Player
       army.advance(game, this)
 
 class Card
-  constructor: (@cost) ->
+  constructor: (@name, @cost) ->
 
   execute: (player, location, game) ->
 
 class BuildingCard extends Card
-  constructor: (@cost, @template) ->
-    super @cost
+  constructor: (@name, @cost, @template) ->
+    super @name, @cost
     
   execute: (player, location, game) ->
     game.constructBuilding(player, location, new Building(location, allBuildings[@template.name], 0))
@@ -172,16 +172,17 @@ for building in buildings
   allBuildings[building.name] = building
 
 cards = [
-    new BuildingCard(10, allBuildings['tower'])
-  , new BuildingCard(10, allBuildings['church'])
-  , new BuildingCard(10, allBuildings['barracks'])
-  , new BuildingCard(10, allBuildings['pit'])
+    new BuildingCard('tower',    10, allBuildings['tower'])
+  , new BuildingCard('church',   10, allBuildings['church'])
+  , new BuildingCard('barracks', 10, allBuildings['barracks'])
+  , new BuildingCard('pit',      10, allBuildings['pit'])
   ]
 
 allCards = {}
 for card in cards
   allCards[card.name] = card
 
+exports.Constants = Constants
 exports.Point = Point
 exports.Player = Player
 exports.Field = Field
