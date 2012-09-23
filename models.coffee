@@ -172,10 +172,10 @@ for building in buildings
   allBuildings[building.name] = building
 
 cards = [
-    new BuildingCard(10, allBuildings["tower"])
-  , new BuildingCard(10, allBuildings["church"])
-  , new BuildingCard(10, allBuildings["barracks"])
-  , new BuildingCard(10, allBuildings["pit"])
+    new BuildingCard(10, allBuildings['tower'])
+  , new BuildingCard(10, allBuildings['church'])
+  , new BuildingCard(10, allBuildings['barracks'])
+  , new BuildingCard(10, allBuildings['pit'])
   ]
 
 allCards = {}

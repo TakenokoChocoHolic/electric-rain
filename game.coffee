@@ -2,6 +2,8 @@ models = require './models.coffee'
 
 class Game
   constructor: (settings) ->
+    # Use default settings
+    settings = new Settings() if typeof settings == 'undefined'
     @time = 1
     @players = []
     @field = new models.Field(settings.mapWidth, settings.mapHeight)
