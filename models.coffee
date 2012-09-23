@@ -88,7 +88,7 @@ class Map
     @map = []
     for y in [0...@height]
       for x in [0...@width]
-        @setObject({x: x, y: y}, null)
+        @setObject(new Point(x, y), null)
 
   setObject: (location, obj) ->
     # NOTE override map
