@@ -6,11 +6,8 @@ class Game
     @players = []
     @map = new models.Map(@settings.mapWidth, @settings.mapHeight)
     for i in [0...@settings.playerCount]
-      pl = new models.Player([])
-      homeLoc = { x: (i%2 * 50), y: (i/2 % 2) * 50 }
-      home = new models.Building(homeLoc, models.HomeTemplate, 0)
-      pl.buildings.push home
-      @players.push(pl)
+      player = new models.Player([], i, @map)
+      @players.push(player)
 
   getMapStr: ->
     @map.str()
