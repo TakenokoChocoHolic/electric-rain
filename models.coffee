@@ -50,7 +50,7 @@ class Army
 
     for enemy in game.players
       if enemy != mine
-        for iArmy in [0..enemy.armies.length]
+        for iArmy in [0...enemy.armies.length]
           army = enemy.armies[iArmy]
           if @location.equals(army.location)
             if @power <= army.power
@@ -86,8 +86,8 @@ class Building
 class Map
   constructor: (@width, @height) ->
     @map = []
-    for y in [0..@height.length]
-      for x in [0..@width.length]
+    for y in [0...@height]
+      for x in [0...@width]
         @setObject({x: x, y: y}, null)
 
   setObject: (location, obj) ->
@@ -103,7 +103,7 @@ class Map
 class Mine
 
 class Player
-  constructor: (@deck) ->
+  constructor: (@deck, index, map) ->
     _.shuffle(@deck)
     @hand      = []
     @trash     = []
@@ -111,15 +111,18 @@ class Player
     @armies    = []
     @gold = 20
     @draw_count = DRAW_FREQUENCY
-    for i in [0..HAND_COUNT]
+    for i in [0...HAND_COUNT]
       @draw()
+    homeLocation = { x: (index%2 * 50), y: (index/2 % 2) * 50 }
+    home = new Building(homeLocation, HomeTemplate, 0)
+    @constructBuilding(home, map)
 
   draw: ->
     @hand.push(@deck.shift())
 
   useCard: (name) ->
     index = -1
-    for iHand in [0..@hand.length]
+    for iHand in [0...@hand.length]
       if @hand[iHand].name == name
         index = iHand
     if index == -1
@@ -141,6 +144,10 @@ class Player
 
     for army in @armies
       army.advance(game, this)
+      
+  constructBuilding: (building, map) ->
+    @buildings.push(building)
+    map.setObject(building)
 
 class Card
   constructor: (@cost) ->
@@ -182,6 +189,6 @@ exports.Map = Map
 exports.Card = Card
 exports.Building= Building
 exports.BuildingCard = BuildingCard
-exports.AllBuildings = allBuildings
-exports.HomeTemplate = allBuildings[0]
+exports.AllBuildings = AllBuildings = allBuildings
+exports.HomeTemplate = HomeTemplate = allBuildings[0]
 exports.AllCards = allCards
