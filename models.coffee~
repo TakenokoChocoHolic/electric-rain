@@ -35,7 +35,7 @@ class Army
 
   # indexはPlayer.armiesにおける自分のindex
   advance: (game, me, index) ->
-    all = @from.distance(@to)
+    all = @form.distance(@to)
     now = @from.distance(@location)
     dx = @to.location.x - @from.location.x
     dx = ~~((now + 1) * dx / all) - ~~(now * dx / all)
